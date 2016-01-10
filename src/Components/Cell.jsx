@@ -3,20 +3,20 @@ import React from 'react';
 class Cell extends React.Component {
 
     render() {
-        const { position } = this.props
-        let color = '#00aeef'
-        if (position == 0) {
-          color = '#eee'
-        }
+        const { position, color, key } = this.props
+        let cellColor = color
 
         const style = {
           gridCell: {
-            backgroundColor: color,
+            backgroundColor: cellColor,
+            border: '5px solid #eee',
+            boxSizing: 'border-box',
             textAlign: 'center',
-            width: '50px',
-            height: '50px',
-            margin: '5px',
-            display: 'inline-block'
+            width: '33.33%',
+            height: '33.33%',
+            display: 'inline-block',
+            verticalAlign: 'middle',
+            borderRadius: '100%'
           },
           innerCell: {
             fontSize: '20px',
@@ -25,10 +25,7 @@ class Cell extends React.Component {
         }
 
         return (
-          <div
-            style={style.gridCell}
-            onClick={this.props.onCellClick}>
-            <p style={style.innerCell}>{position}</p>
+          <div style={style.gridCell}>
           </div>
         )
     }

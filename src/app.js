@@ -15,7 +15,9 @@ store.dispatch({
   data: {
     gridWidth: 3,
     cellData: [],
-    winningCombo: [1, 0, 2, 3, 4, 5, 6, 7, 8],
+    cellColors: ['#eee', '#a86ed4', '#d3b8bc', '#ffa56c', '#ffe273', '#b1c559', '#ed92a3', '#55bbc8', '#5585c6'],
+    level: 1,
+    winningCombo: [0, 3, 1, 6, 4, 2, 7, 8, 5],
     winner: false
   }
 })

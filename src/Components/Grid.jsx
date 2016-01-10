@@ -6,21 +6,22 @@ let style = {
     display: 'inline-block',
   },
   grid: {
-    width: '180px',
-    height: '180px',
-    backgroundColor: 'black',
+    width: '200px',
+    height: '200px',
+    backgroundColor: '#eee',
+    padding: '10px'
   }
 }
 
 class Grid extends React.Component {
 
   getCells() {
-    const { cellData } = this.props
+    const { cellData, cellColors } = this.props
 
     return cellData.toJS().map((cell, i) => {
       return (
         <Cell
-        color={cell.color}
+        color={cellColors.toJS()[cell.position]}
         position={cell.position}
         key={i} />
       )
@@ -30,7 +31,6 @@ class Grid extends React.Component {
   render() {
     return (
       <div style={style.gridContainer}>
-        <h2>Puzzle</h2>
         <div style={style.grid}>
           {this.getCells()}
         </div>

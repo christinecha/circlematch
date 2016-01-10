@@ -26,7 +26,7 @@ export const MOVE_CELLS = (cellData, keyCode, winningCombo) => {
   }
 
   const findEmptyCell = (cellData) => {
-    for (let i = 0; i < cellData.length; i++) {
+    for (var i = 0; i < cellData.length; i++) {
       if (cellData[i].position == 0) {
         return i
       }
@@ -53,6 +53,23 @@ export const MOVE_CELLS = (cellData, keyCode, winningCombo) => {
     data: {
       cellData: cellData,
       winner: winner()
+    }
+  }
+}
+
+export const SET_LEVEL = (level) => {
+  const winningCombos = [
+    [0, 3, 1, 6, 4, 2, 7, 8, 5],
+    [0, 7, 1, 3, 8, 5, 6, 2, 4],
+    [0, 8, 5, 2, 4, 6, 7, 1, 3],
+    [0, 1, 3, 7, 5, 8, 6, 2, 4]
+  ]
+  return {
+    type: 'SET_LEVEL',
+    data: {
+      winner: false,
+      level: level,
+      winningCombo: winningCombos[level]
     }
   }
 }
