@@ -8,7 +8,6 @@ function setInitialState(state, newData) {
       position: i
     })
   }
-  // newData.cellData[0].position = ''
   return state.merge(newData)
 }
 
@@ -17,12 +16,10 @@ function setState(state, newData) {
 }
 
 function reducer(state = Map(), action) {
-  console.log(action.type)
+  console.log(action.type, action.data)
   switch (action.type) {
     case 'SET_INITIAL_STATE':
       return setInitialState(state, action.data)
-    case 'HIGHLIGHT_CELL':
-      return setState(state, action.data)
     case 'MOVE_CELLS':
       return setState(state, action.data)
   }

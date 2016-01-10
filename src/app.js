@@ -14,7 +14,9 @@ store.dispatch({
   type: 'SET_INITIAL_STATE',
   data: {
     gridWidth: 3,
-    cellData: []
+    cellData: [],
+    winningCombo: [1, 0, 2, 3, 4, 5, 6, 7, 8],
+    winner: false
   }
 })
 

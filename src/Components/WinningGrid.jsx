@@ -3,6 +3,7 @@ import Cell from './Cell.jsx'
 
 let style = {
   gridContainer: {
+    marginLeft: '20px',
     display: 'inline-block',
   },
   grid: {
@@ -15,13 +16,12 @@ let style = {
 class Grid extends React.Component {
 
   getCells() {
-    const { cellData } = this.props
+    const { winningCombo } = this.props
 
-    return cellData.toJS().map((cell, i) => {
+    return winningCombo.toJS().map((cell, i) => {
       return (
         <Cell
-        color={cell.color}
-        position={cell.position}
+        position={cell}
         key={i} />
       )
     })
@@ -30,7 +30,7 @@ class Grid extends React.Component {
   render() {
     return (
       <div style={style.gridContainer}>
-        <h2>Puzzle</h2>
+        <h2>Winning Combo</h2>
         <div style={style.grid}>
           {this.getCells()}
         </div>

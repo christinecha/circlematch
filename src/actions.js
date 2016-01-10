@@ -8,7 +8,7 @@ export const HIGHLIGHT_CELL = (cellData, cellId) => {
   }
 }
 
-export const MOVE_CELLS = (cellData, keyCode) => {
+export const MOVE_CELLS = (cellData, keyCode, winningCombo) => {
   let positionChange = 0
   switch (keyCode) {
     case 38: // up arrow
@@ -35,16 +35,24 @@ export const MOVE_CELLS = (cellData, keyCode) => {
   }
 
   let emptyCellId = (findEmptyCell(cellData))
-  console.log(emptyCellId, positionChange)
   let movingCellId_1 = emptyCellId + positionChange
   cellData[emptyCellId].position = cellData[movingCellId_1].position
   cellData[movingCellId_1].position = 0
-  console.log(cellData)
+
+  const winner = () => {
+    for (let i = 0; i < cellData.length; i++) {
+      if (cellData[i].position != winningCombo[i]) {
+        return false
+      }
+    }
+    return true
+  }
 
   return {
     type: 'MOVE_CELLS',
     data: {
-      cellData: cellData
+      cellData: cellData,
+      winner: winner()
     }
   }
 }
