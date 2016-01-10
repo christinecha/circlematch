@@ -47,7 +47,7 @@ export class ReactApp extends React.Component {
         padding: '20px 0'
       }
     }
-    
+
     return (
       <div>
         <h2>circlematch</h2>
@@ -65,6 +65,8 @@ export class ReactApp extends React.Component {
         <h2 style={style.winnerDisplay}>
           {this.displayWinner()}
         </h2>
+        <br />
+        <p>NOTE: This is a work in progress. Gameplay only available in browser, and there are only 3 levels.</p>
       </div>
     )
   }
