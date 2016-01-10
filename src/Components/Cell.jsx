@@ -26,7 +26,6 @@ class Cell extends React.Component {
 
         return (
           <div style={style.gridCell}>
-            <p>{position} {key}</p>
           </div>
         )
     }
