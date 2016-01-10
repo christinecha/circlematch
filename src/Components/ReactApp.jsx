@@ -2,9 +2,12 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
-import * as action from '../actions.js'
+import Modal from 'react-modal'
 import Grid from './Grid.jsx'
 import Sidebar from './Sidebar.jsx'
+import _NextLevel from './_NextLevel.jsx'
+import * as style from '../style.js'
+import * as action from '../actions.js'
 
 export class ReactApp extends React.Component {
 
@@ -38,35 +41,43 @@ export class ReactApp extends React.Component {
     }
   }
 
-  render() {
-    let style = {
-      winnerDisplay: {
-        backgroundColor: '#eee',
-        width: '100%',
-        marginTop: '20px',
-        padding: '20px 0'
-      }
-    }
+  closeModal() {
+    const { dispatch } = this.props
+    dispatch(action.CLOSE_MODAL())
+  }
 
+  render() {
+    const {
+      gridWidth,
+      cellData,
+      cellColors,
+      level,
+      winningCombo,
+      winner,
+      modalIsOpen
+    } = this.props
     return (
       <div>
         <h2>circlematch</h2>
         <p>use your arrow keys to move</p>
         <br />
+        <Modal isOpen={modalIsOpen} style={style.modal}>
+          <_NextLevel level={level} closeModal={() => this.closeModal()}/>
+        </Modal>
         <Grid
-          width={this.props.gridWidth}
-          cellData={this.props.cellData}
-          cellColors={this.props.cellColors} />
+          width={gridWidth}
+          cellData={cellData}
+          cellColors={cellColors} />
         <Sidebar
-          width={this.props.gridWidth}
-          cellColors={this.props.cellColors}
-          level={this.props.level}
-          winningCombo={this.props.winningCombo} />
+          width={gridWidth}
+          cellColors={cellColors}
+          level={level}
+          winningCombo={winningCombo} />
         <h2 style={style.winnerDisplay}>
           {this.displayWinner()}
         </h2>
         <br />
-        <p>NOTE: This is a work in progress. Gameplay only available in browser, and there are only 3 levels.</p>
+        <p>NOTE: This is a work in progress. Gameplay only available in the desktop browser, and there are only 3 levels.</p>
       </div>
     )
   }
@@ -79,7 +90,8 @@ function mapStateToProps(state) {
     cellColors: state.get('cellColors'),
     level: state.get('level'),
     winningCombo: state.get('winningCombo'),
-    winner: state.get('winner')
+    winner: state.get('winner'),
+    modalIsOpen: state.get('modalIsOpen')
   }
 }
 

@@ -21,6 +21,8 @@ function reducer(state = Map(), action) {
       return setState(state, action.data)
     case 'SET_LEVEL':
       return setState(state, action.data)
+    case 'CLOSE_MODAL':
+      return setState(state, action.data)
   }
   return state
 }

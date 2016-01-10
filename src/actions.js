@@ -69,7 +69,17 @@ export const SET_LEVEL = (level) => {
     data: {
       winner: false,
       level: level,
-      winningCombo: winningCombos[level]
+      winningCombo: winningCombos[level],
+      modalIsOpen: true
+    }
+  }
+}
+
+export const CLOSE_MODAL = () => {
+  return {
+    type: 'CLOSE_MODAL',
+    data: {
+      modalIsOpen: false
     }
   }
 }
