@@ -47,10 +47,11 @@ export class ReactApp extends React.Component {
         padding: '20px 0'
       }
     }
-
+    
     return (
       <div>
         <h2>circlematch</h2>
+        <p>use your arrow keys to move</p>
         <br />
         <Grid
           width={this.props.gridWidth}
