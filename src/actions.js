@@ -1,9 +1,21 @@
+import * as helper from './helpers.js'
+
 export const HIGHLIGHT_CELL = (cellData, cellId) => {
   cellData[cellId].color = '#00aeef'
   return {
     type: 'HIGHLIGHT_CELL',
     data: {
       cellData: cellData
+    }
+  }
+}
+
+export const SOLVE_PUZZLE = (cellData, winningCombo) => {
+  console.log('?')
+  return {
+    type: 'SOLVE_PUZZLE',
+    data: {
+      winner: helper.solution(cellData,winningCombo)
     }
   }
 }
@@ -35,6 +47,13 @@ export const MOVE_CELLS = (cellData, keyCode, winningCombo) => {
   }
 
   let emptyCellId = (findEmptyCell(cellData))
+  if (([2, 5, 8].indexOf(emptyCellId) >= 0) && (keyCode == 37)) {
+    console.log('illegal')
+    positionChange = 0
+  } else if (([0, 3, 6].indexOf(emptyCellId) >= 0) && (keyCode == 39)) {
+    console.log('illegal')
+    positionChange = 0
+  }
   let movingCellId_1 = emptyCellId + positionChange
   cellData[emptyCellId].position = cellData[movingCellId_1].position
   cellData[movingCellId_1].position = 0
@@ -58,18 +77,13 @@ export const MOVE_CELLS = (cellData, keyCode, winningCombo) => {
 }
 
 export const SET_LEVEL = (level) => {
-  const winningCombos = [
-    [0, 3, 1, 6, 4, 2, 7, 8, 5],
-    [0, 7, 1, 3, 8, 5, 6, 2, 4],
-    [0, 8, 5, 2, 4, 6, 7, 1, 3],
-    [0, 1, 3, 7, 5, 8, 6, 2, 4]
-  ]
+  let newLevel = helper.randomLevel()
   return {
     type: 'SET_LEVEL',
     data: {
       winner: false,
       level: level,
-      winningCombo: winningCombos[level],
+      winningCombo: newLevel,
       modalIsOpen: true
     }
   }

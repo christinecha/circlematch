@@ -23,6 +23,8 @@ function reducer(state = Map(), action) {
       return setState(state, action.data)
     case 'CLOSE_MODAL':
       return setState(state, action.data)
+    case 'SOLVE_PUZZLE':
+      return setState(state, action.data)
   }
   return state
 }

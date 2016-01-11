@@ -77,7 +77,7 @@ export class ReactApp extends React.Component {
           {this.displayWinner()}
         </h2>
         <br />
-        <p>NOTE: This is a work in progress. Gameplay only available in the desktop browser, and there are only 3 levels.</p>
+        <p>NOTE \\ Only works on desktop. Mobile coming soon!</p>
       </div>
     )
   }

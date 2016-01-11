@@ -16,6 +16,15 @@ h2 {
   font-size: 22px;
 }
 
+a {
+  text-decoration: none;
+  color: #a86ed4;
+}
+
+a:hover {
+  color: #ffa56c;
+}
+
 div {
   vertical-align: top;
 }

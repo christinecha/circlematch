@@ -1,3 +1,5 @@
+import Radium from 'radium'
+
 export const modal = {
   top             : '50%',
   left            : '50%',
@@ -15,7 +17,10 @@ export const modal = {
       backgroundColor : '#55bbc8',
       borderRadius    : '5px',
       color           : '#fff',
-      fontSize        : '20px'
+      fontSize        : '20px',
+      hover: {
+        backgroundColor : '#b1c559'
+      }
     }
   }
 }
