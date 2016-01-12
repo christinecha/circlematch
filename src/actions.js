@@ -11,11 +11,11 @@ export const HIGHLIGHT_CELL = (cellData, cellId) => {
 }
 
 export const SOLVE_PUZZLE = (cellData, winningCombo, level) => {
-  console.log('trying to solve')
+  helper.solvePuzzle(cellData.toJS(),winningCombo.toJS())
   return {
     type: 'SOLVE_PUZZLE',
     data: {
-      winner: helper.solvePuzzle(cellData.toJS(),winningCombo.toJS()),
+      winner: true,
       autoSolved: true,
       level: level - 1
     }
