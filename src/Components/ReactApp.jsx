@@ -13,8 +13,12 @@ export class ReactApp extends React.Component {
 
   componentDidMount() {
     window.addEventListener('keydown', (e) => {
-      const { dispatch, cellData, winningCombo, winner, level } = this.props
-      dispatch(action.MOVE_CELLS(cellData.toJS(), e.keyCode, winningCombo.toJS()))
+      const { dispatch, cellData, winningCombo, winner, level, modalIsOpen } = this.props
+      if (modalIsOpen == true) {
+        dispatch(action.CLOSE_MODAL())
+      } else {
+        dispatch(action.MOVE_CELLS(cellData.toJS(), e.keyCode, winningCombo.toJS()))
+      }
     })
   }
 
@@ -27,8 +31,12 @@ export class ReactApp extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('keydown', (e) => {
-      const { dispatch, cellData, winningCombo, winner, level } = this.props
-      dispatch(action.MOVE_CELLS(cellData.toJS(), e.keyCode, winningCombo.toJS()))
+      const { dispatch, cellData, winningCombo, winner, level, modalIsOpen } = this.props
+      if (modalIsOpen == true) {
+        dispatch(action.CLOSE_MODAL())
+      } else {
+        dispatch(action.MOVE_CELLS(cellData.toJS(), e.keyCode, winningCombo.toJS()))
+      }
     })
   }
 

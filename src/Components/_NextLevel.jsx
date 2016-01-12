@@ -13,7 +13,7 @@ class _NextLevel extends React.Component {
         <button
           style={style.modal.nextLevel.button}
           onClick={closeModal}>
-          continue to level {level}
+          press any key to continue
         </button>
       </div>
     )

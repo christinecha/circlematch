@@ -1,49 +1,49 @@
+"use strict"
+
 export const randomLevel = () => {
-  let initialState = [0,1,2,3,4,5,6,7,8]
-  let testingState = initialState.join('')
-  let verifiedSolutions = []
-  let possibleSolutions = [testingState]
-  let possibleMoves = [1,-1,3,-3]
+  let moves = [1, 3, -1, -3]
+  let originalState = [0,1,2,3,4,5,6,7,8]
+  let newState = []
 
   const randomNum = (min, max) => {
     return Math.round(Math.random() * (max - min)) + min
   }
 
-  const checkNextState = () => {
-    for (let i = verifiedSolutions.length; i < possibleSolutions.length; i++) {
-      testingState = possibleSolutions[randomNum(verifiedSolutions.length, possibleSolutions.length - 1)]
-      let testingStateArray = testingState.split('')
-      console.log('checking state ', testingState)
+  const generateNewState = () => {
+    let emptyCell = originalState.indexOf(0)
+    let legalmove = false
+    let move = 0
+    let movingCell = ''
 
-      for (let i = 0; i < possibleMoves.length; i++) {
-        let move = possibleMoves[randomNum(0, possibleMoves.length - 1)]
-        let emptyCellId = testingStateArray.indexOf('0')
-        let movingCellId = emptyCellId + move
+    while (legalmove == false) {
+      move = moves[randomNum(0, moves.length - 1)]
+      movingCell = emptyCell + move
 
-        if ((movingCellId >= 0) && (movingCellId < 9)) {
-          if (([2, 5, 8].indexOf(emptyCellId) >= 0) && (move == 1)) {
-            // illegal
-          } else if (([0, 3, 6].indexOf(emptyCellId) >= 0) && (move == -1)) {
-            // illegal
-          } else {
-            let newState = testingStateArray
-            newState[emptyCellId] = newState[movingCellId]
-            newState[movingCellId] = '0'
-            let newStateCode = newState.join('')
-            if (possibleSolutions.indexOf(newStateCode) < 0) {
-              possibleSolutions.push(newStateCode)
-            } else {
-              // already there
-            }
-          }
+      if (movingCell < 9 && movingCell >= 0){
+        if ([2,5,8].indexOf(emptyCell) >= 0 && move == 1) {
+          legalmove = false
+        } else if ([3,6].indexOf(emptyCell) >= 0 && move == -1) {
+          legalmove = false
+        } else {
+          legalmove = true
+          console.log(emptyCell, move)
         }
       }
-      verifiedSolutions.push(testingState)
     }
-  }
-  checkNextState()
 
-  let randomCombo = possibleSolutions[randomNum(0, possibleSolutions.length - 1)]
-  let randomComboArray = randomCombo.split('')
-  return randomComboArray
+    let protoState = originalState.slice()
+    protoState[emptyCell] = protoState[movingCell]
+    protoState[movingCell] = 0
+
+    console.log(originalState)
+    console.log(protoState)
+    originalState = protoState.slice()
+    newState = protoState.slice()
+  }
+
+  for (let i = 0; i < 20; i++) {
+    generateNewState()
+  }
+
+  return newState
 }
