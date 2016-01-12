@@ -54,6 +54,11 @@ export class ReactApp extends React.Component {
     dispatch(action.CLOSE_MODAL())
   }
 
+  solvePuzzle() {
+    const { dispatch, cellData, winningCombo, level } = this.props
+    dispatch(action.SOLVE_PUZZLE(cellData, winningCombo, level))
+  }
+
   render() {
     const {
       gridWidth,
@@ -62,7 +67,8 @@ export class ReactApp extends React.Component {
       level,
       winningCombo,
       winner,
-      modalIsOpen
+      modalIsOpen,
+      autoSolved
     } = this.props
     return (
       <div>
@@ -70,7 +76,10 @@ export class ReactApp extends React.Component {
         <p>use your arrow keys to move</p>
         <br />
         <Modal isOpen={modalIsOpen} style={style.modal}>
-          <_NextLevel level={level} closeModal={() => this.closeModal()}/>
+          <_NextLevel
+            level={level}
+            autoSolved={autoSolved}
+            closeModal={() => this.closeModal()}/>
         </Modal>
         <Grid
           width={gridWidth}
@@ -80,7 +89,8 @@ export class ReactApp extends React.Component {
           width={gridWidth}
           cellColors={cellColors}
           level={level}
-          winningCombo={winningCombo} />
+          winningCombo={winningCombo}
+          onSolveButtonClick = {() => this.solvePuzzle()} />
         <h2 style={style.winnerDisplay}>
           {this.displayWinner()}
         </h2>
@@ -99,7 +109,8 @@ function mapStateToProps(state) {
     level: state.get('level'),
     winningCombo: state.get('winningCombo'),
     winner: state.get('winner'),
-    modalIsOpen: state.get('modalIsOpen')
+    modalIsOpen: state.get('modalIsOpen'),
+    autoSolved: state.get('autoSolved')
   }
 }
 

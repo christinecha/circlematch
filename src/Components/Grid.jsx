@@ -21,8 +21,8 @@ class Grid extends React.Component {
     return cellData.toJS().map((cell, i) => {
       return (
         <Cell
-        color={cellColors.toJS()[cell.position]}
-        position={cell.position}
+        color={cellColors.toJS()[cell]}
+        position={cell}
         key={i} />
       )
     })

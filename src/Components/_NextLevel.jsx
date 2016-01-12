@@ -4,11 +4,15 @@ import * as style from '../style.js'
 
 class _NextLevel extends React.Component {
   render() {
-    const {level, closeModal} = this.props
+    const {level, closeModal, autoSolved} = this.props
+    let announcement = 'you got it!'
+    if (autoSolved == true) {
+      announcement = 'auto-solved!'
+    }
 
     return (
       <div style={style.modal.nextLevel}>
-        <h1>you got it!</h1>
+        <h1>{announcement}</h1>
         <br />
         <button
           style={style.modal.nextLevel.button}

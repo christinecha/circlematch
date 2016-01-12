@@ -10,57 +10,47 @@ export const HIGHLIGHT_CELL = (cellData, cellId) => {
   }
 }
 
-export const SOLVE_PUZZLE = (cellData, winningCombo) => {
-  console.log('?')
+export const SOLVE_PUZZLE = (cellData, winningCombo, level) => {
+  console.log('trying to solve')
   return {
     type: 'SOLVE_PUZZLE',
     data: {
-      winner: helper.solution(cellData,winningCombo)
+      winner: helper.solvePuzzle(cellData.toJS(),winningCombo.toJS()),
+      autoSolved: true,
+      level: level - 1
     }
   }
 }
 
 export const MOVE_CELLS = (cellData, keyCode, winningCombo) => {
-  let positionChange = 0
+  let move = 0
   switch (keyCode) {
     case 38: // up arrow
-      positionChange = 3
+      move = 3
       break
     case 40: // down arrow
-      positionChange = -3
+      move = -3
       break
     case 39: // right arrow
-      positionChange = -1
+      move = -1
       break
     case 37: // left arrow
-      positionChange = 1
+      move = 1
       break
   }
 
-  const findEmptyCell = (cellData) => {
-    for (var i = 0; i < cellData.length; i++) {
-      if (cellData[i].position == 0) {
-        return i
-      }
-    }
-    return null
+  let emptyCell = cellData.indexOf(0)
+  if (helper.moveIsLegal(emptyCell, move)) {
+    let movingCell = emptyCell + move
+    cellData[emptyCell] = cellData[movingCell]
+    cellData[movingCell] = 0
+  } else {
+    // nothing
   }
-
-  let emptyCellId = (findEmptyCell(cellData))
-  if (([2, 5, 8].indexOf(emptyCellId) >= 0) && (keyCode == 37)) {
-    console.log('illegal')
-    positionChange = 0
-  } else if (([0, 3, 6].indexOf(emptyCellId) >= 0) && (keyCode == 39)) {
-    console.log('illegal')
-    positionChange = 0
-  }
-  let movingCellId_1 = emptyCellId + positionChange
-  cellData[emptyCellId].position = cellData[movingCellId_1].position
-  cellData[movingCellId_1].position = 0
 
   const winner = () => {
     for (let i = 0; i < cellData.length; i++) {
-      if (cellData[i].position != winningCombo[i]) {
+      if (cellData[i] != winningCombo[i]) {
         return false
       }
     }

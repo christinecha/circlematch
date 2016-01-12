@@ -9,7 +9,15 @@ let style = {
   },
   level: {
     backgroundColor: '#eee',
-    padding: '5px 0'
+    padding: '5px 0',
+    marginBottom: '10px'
+  },
+  solveButton: {
+    backgroundColor: '#eee',
+    padding: '5px 10px',
+    width: '120px',
+    border: 'none',
+    marginBottom: '10px'
   },
   grid: {
     backgroundColor: '#eee',
@@ -41,11 +49,15 @@ class Grid extends React.Component {
         <div style={style.level}>
           <h2>LEVEL {this.props.level}</h2>
         </div>
-        <br />
         <h4>YOUR GOAL</h4>
         <div style={style.grid}>
           {this.getCells()}
         </div>
+        <button
+          style={style.solveButton}
+          onClick={this.props.onSolveButtonClick}>
+          <h3>SOLVE</h3>
+        </button>
       </div>
     )
   }
