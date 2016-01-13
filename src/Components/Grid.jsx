@@ -1,4 +1,5 @@
 import React from 'react'
+import TileGrid from './TileGrid.jsx'
 import Cell from './Cell.jsx'
 
 let style = {
@@ -16,19 +17,21 @@ let style = {
 class Grid extends React.Component {
 
   getCells() {
-    const { cellData, cellColors } = this.props
+    const { width, cellData, cellColors, animation } = this.props
 
     return cellData.toJS().map((cell, i) => {
       return (
         <Cell
         color={cellColors.toJS()[cell]}
         position={cell}
-        key={i} />
+        key={i}
+        animation={animation.toJS()[i]} />
       )
     })
   }
 
   render() {
+    const { width, cellData, cellColors, animation } = this.props
     return (
       <div style={style.gridContainer}>
         <div style={style.grid}>

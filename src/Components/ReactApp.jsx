@@ -31,11 +31,11 @@ export class ReactApp extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('keydown', (e) => {
-      const { dispatch, cellData, winningCombo, winner, level, modalIsOpen } = this.props
+      const { dispatch, cellData, winningCombo, winner, level, modalIsOpen, animation } = this.props
       if (modalIsOpen == true) {
         dispatch(action.CLOSE_MODAL())
       } else {
-        dispatch(action.MOVE_CELLS(cellData.toJS(), e.keyCode, winningCombo.toJS()))
+        dispatch(action.MOVE_CELLS(cellData.toJS(), e.keyCode, winningCombo.toJS(), animation))
       }
     })
   }
@@ -68,7 +68,8 @@ export class ReactApp extends React.Component {
       winningCombo,
       winner,
       modalIsOpen,
-      autoSolved
+      autoSolved,
+      animation
     } = this.props
     return (
       <div>
@@ -84,7 +85,8 @@ export class ReactApp extends React.Component {
         <Grid
           width={gridWidth}
           cellData={cellData}
-          cellColors={cellColors} />
+          cellColors={cellColors}
+          animation={animation} />
         <Sidebar
           width={gridWidth}
           cellColors={cellColors}
@@ -110,7 +112,8 @@ function mapStateToProps(state) {
     winningCombo: state.get('winningCombo'),
     winner: state.get('winner'),
     modalIsOpen: state.get('modalIsOpen'),
-    autoSolved: state.get('autoSolved')
+    autoSolved: state.get('autoSolved'),
+    animation: state.get('animation')
   }
 }
 

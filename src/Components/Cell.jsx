@@ -1,15 +1,26 @@
-import React from 'react';
+"use strict"
+
+import React from 'react'
+import Tile from './Tile.jsx'
 
 class Cell extends React.Component {
 
     render() {
-        const { position, color, key } = this.props
-        let cellColor = color
+        const { position, color, key, animation } = this.props
+        let border = '5px solid #eee'
 
+        if (color == 'transparent') {
+          border = '5px solid transparent'
+        }
         const style = {
           gridCell: {
-            backgroundColor: cellColor,
-            border: '5px solid #eee',
+            position: 'relative',
+            animation: animation,
+            WebkitAnimation: animation,
+            MozAnimation: animation,
+            OAnimation: animation,
+            backgroundColor: color,
+            border: border,
             boxSizing: 'border-box',
             textAlign: 'center',
             width: '33.33%',

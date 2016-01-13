@@ -28,7 +28,7 @@ let style = {
   }
 }
 
-class Grid extends React.Component {
+class Sidebar extends React.Component {
 
   getCells() {
     const { winningCombo, cellColors } = this.props
@@ -63,4 +63,4 @@ class Grid extends React.Component {
   }
 }
 
-export default Grid
+export default Sidebar
