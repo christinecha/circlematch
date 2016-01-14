@@ -15,11 +15,15 @@ function reducer(state = Map(), action) {
       return setState(state, action.data)
     case 'SET_LEVEL':
       return setState(state, action.data)
+    case 'OPEN_MODAL':
+      return setState(state, action.data)
     case 'CLOSE_MODAL':
       return setState(state, action.data)
     case 'SOLVE_PUZZLE':
       return setState(state, action.data)
     case 'RANDOMIZE_COLORS':
+      return setState(state, action.data)
+    case 'RESIZE_GRID':
       return setState(state, action.data)
   }
   return state

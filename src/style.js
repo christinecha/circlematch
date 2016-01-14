@@ -30,7 +30,6 @@ export const timer = {
 
 export const toolbar = {
   width           : '400px',
-  borderTop       : '2px solid #eee',
   margin          : '20px auto',
   padding         : '10px',
   group: {

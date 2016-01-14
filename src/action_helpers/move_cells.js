@@ -1,17 +1,17 @@
 import * as helper from './helpers.js'
 
-export const moveCells = (cellData, keyCode, winningCombo) => {
+export const moveCells = (gridWidth, cellData, keyCode, winningCombo) => {
   let move = 0
   let animation = ['', '', '', '', '', '', '', '', '']
   let animationCode = ''
 
   switch (keyCode) {
     case 38: // up arrow
-      move = 3
+      move = gridWidth
       animationCode = 'move-up .1s 1 ease'
       break
     case 40: // down arrow
-      move = -3
+      move = -(gridWidth)
       animationCode = 'move-down .1s 1 ease'
       break
     case 39: // right arrow
@@ -25,7 +25,7 @@ export const moveCells = (cellData, keyCode, winningCombo) => {
   }
 
   let emptyCell = cellData.indexOf(0)
-  if (helper.moveIsLegal(emptyCell, move)) {
+  if (helper.moveIsLegal(gridWidth, emptyCell, move)) {
     let movingCell = emptyCell + move
     cellData[emptyCell] = cellData[movingCell]
     cellData[movingCell] = 0

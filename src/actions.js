@@ -1,8 +1,8 @@
 import {moveCells} from './action_helpers/move_cells.js'
 import * as helper from './action_helpers/helpers.js'
 
-export const SOLVE_PUZZLE = (cellData, winningCombo, level) => {
-  helper.solvePuzzle(cellData.toJS(),winningCombo.toJS())
+export const SOLVE_PUZZLE = (gridWidth, cellData, winningCombo, level) => {
+  helper.solvePuzzle(gridWidth, cellData.toJS(),winningCombo.toJS())
   return {
     type: 'SOLVE_PUZZLE',
     data: {
@@ -13,8 +13,8 @@ export const SOLVE_PUZZLE = (cellData, winningCombo, level) => {
   }
 }
 
-export const MOVE_CELLS = (cellData, keyCode, winningCombo) => {
-  return moveCells(cellData, keyCode, winningCombo)
+export const MOVE_CELLS = (gridWidth, cellData, keyCode, winningCombo) => {
+  return moveCells(gridWidth, cellData, keyCode, winningCombo)
 }
 
 export const TIMER = (timeLeft) => {
@@ -30,16 +30,26 @@ export const TIMER = (timeLeft) => {
   }
 }
 
-export const SET_LEVEL = (level) => {
-  let newLevel = helper.randomLevel()
+export const SET_LEVEL = (level, gridWidth) => {
+  let newLevel = helper.randomLevel(gridWidth)
   return {
     type: 'SET_LEVEL',
     data: {
       winner: false,
       level: level,
       winningCombo: newLevel,
-      modalIsOpen: true,
       autoSolved: false,
+      timerIsRunning: false,
+      timeLeft: 60
+    }
+  }
+}
+
+export const OPEN_MODAL = () => {
+  return {
+    type: 'OPEN_MODAL',
+    data: {
+      modalIsOpen: true,
       timerIsRunning: false
     }
   }
@@ -61,6 +71,24 @@ export const RANDOMIZE_COLORS = (gridWidth) => {
     type: 'RANDOMIZE_COLORS',
     data: {
       cellColors: colorScheme
+    }
+  }
+}
+
+export const RESIZE_GRID = (gridWidth) => {
+  let numOfCells = gridWidth * gridWidth
+  let cellData = []
+  let animation = []
+  for (let i = 0; i < numOfCells; i++) {
+    cellData.push(i)
+    animation.push('')
+  }
+  return {
+    type: 'RESIZE_GRID',
+    data: {
+      cellData: cellData,
+      gridWidth: gridWidth,
+      winner: false
     }
   }
 }

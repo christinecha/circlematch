@@ -1,49 +1,53 @@
 import React from 'react'
 import Cell from './Cell.jsx'
 
-let style = {
-  container: {
-    marginLeft: '20px',
-    display: 'inline-block',
-    border: '2px solid #eee',
-  },
-  level: {
-    backgroundColor: '#eee',
-    padding: '5px 0',
-    marginBottom: '10px'
-  },
-  solveButton: {
-    backgroundColor: '#eee',
-    padding: '5px 10px',
-    width: '105px',
-    border: 'none',
-    marginBottom: '10px'
-  },
-  grid: {
-    backgroundColor: '#eee',
-    width: '85px',
-    height: '85px',
-    padding: '10px',
-    margin: '5px 10px 10px 10px'
-  }
-}
-
 class Sidebar extends React.Component {
 
   getCells() {
-    const { winningCombo, cellColors } = this.props
-
+    const { gridWidth, winningCombo, cellColors } = this.props
+    let cellSize = (20) + 'px'
     return winningCombo.toJS().map((cell, i) => {
       return (
         <Cell
+          cellSize={cellSize}
           color={cellColors.toJS()[cell]}
           position={cell}
+          borderWidth='2px'
           key={i} />
       )
     })
   }
 
   render() {
+    const { gridWidth, cellData, cellColors, animation } = this.props
+    let gridSize = (gridWidth * 20) + 'px'
+    let style = {
+      container: {
+        marginLeft: '20px',
+        width: '140px',
+        display: 'inline-block',
+        border: '2px solid #eee',
+      },
+      level: {
+        backgroundColor: '#eee',
+        padding: '5px 0',
+        marginBottom: '10px'
+      },
+      solveButton: {
+        backgroundColor: '#eee',
+        padding: '5px 10px',
+        width: '120px',
+        border: 'none',
+        margin: '10px 0'
+      },
+      grid: {
+        backgroundColor: '#eee',
+        width: gridSize,
+        height: gridSize,
+        padding: '10px',
+        margin: '5px auto'
+      }
+    }
     return (
       <div style={style.container}>
         <div style={style.level}>

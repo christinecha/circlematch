@@ -1,10 +1,17 @@
 "use strict"
 
-export const moveIsLegal = (emptyCell, move) => {
-  if (emptyCell + move < 9 && emptyCell + move >= 0){
-    if ([2,5,8].indexOf(emptyCell) >= 0 && move == 1) {
+export const moveIsLegal = (gridWidth, emptyCell, move) => {
+  let numOfCells = gridWidth * gridWidth
+  let firstOfRows = []
+  let lastOfRows = []
+  for (let i = 0; i < gridWidth; i++) {
+    firstOfRows.push(gridWidth * i)
+    lastOfRows.push((gridWidth * i) - 1)
+  }
+  if (emptyCell + move < numOfCells && emptyCell + move >= 0){
+    if (lastOfRows.indexOf(emptyCell) >= 0 && move == 1) {
       return false
-    } else if ([3,6].indexOf(emptyCell) >= 0 && move == -1) {
+    } else if (firstOfRows.indexOf(emptyCell) >= 0 && move == -1) {
       return false
     } else {
       return true
@@ -51,10 +58,14 @@ export const alreadyChecked = (state, set) => {
   return false
 }
 
-export const randomLevel = () => {
-  let moves = [1, 3, -1, -3]
-  let originalState = [0,1,2,3,4,5,6,7,8]
+export const randomLevel = (gridWidth) => {
+  let numOfCells = gridWidth * gridWidth
+  let moves = [1, gridWidth, -1, -(gridWidth)]
+  let originalState = []
   let newState = []
+  for (let i = 0; i < numOfCells; i++) {
+    originalState.push(i)
+  }
 
   const randomNum = (min, max) => {
     return Math.round(Math.random() * (max - min)) + min
@@ -68,7 +79,7 @@ export const randomLevel = () => {
 
     while (legalmove == false) {
       move = moves[randomNum(0, moves.length - 1)]
-      if (moveIsLegal(emptyCell, move)) {
+      if (moveIsLegal(gridWidth, emptyCell, move)) {
         movingCell = emptyCell + move
         legalmove = true
       }
@@ -91,10 +102,10 @@ export const randomLevel = () => {
   return newState
 }
 
-export const solvePuzzle = (cellData, winningCombo) => {
+export const solvePuzzle = (gridWidth, cellData, winningCombo) => {
   let uncheckedStates = [{score: 0, state: cellData.slice()}]
   let checkedStates = []
-  let moves = [1, 3, -1, -3]
+  let moves = [1, gridWidth, -1, -(gridWidth)]
   let legalmove = false
   let winner = false
 
@@ -107,7 +118,7 @@ export const solvePuzzle = (cellData, winningCombo) => {
     for (let i = 0; i < moves.length; i++) {
       let protoState = originalState.slice()
       let move = moves[i]
-      if (moveIsLegal(emptyCell, move) == true) {
+      if (moveIsLegal(gridWidth, emptyCell, move) == true) {
         movingCell = emptyCell + move
         protoState[emptyCell] = protoState[movingCell]
         protoState[movingCell] = 0

@@ -16,7 +16,7 @@ store.dispatch({
     gridWidth: 3,
     cellData: [0,1,2,3,4,5,6,7,8],
     animation: ['', '', '', '', '', '', '', '', ''],
-    cellColors: ['transparent', '#a86ed4', '#d3b8bc', '#ffa56c', '#ffe273', '#b1c559', '#ed92a3', '#55bbc8', '#5585c6'],
+    cellColors: ['transparent', '#a86ed4', '#d3b8bc', '#ffa56c', '#ffe273', '#b1c559', '#ed92a3', '#55bbc8', '#5585c6', '#8a6439', '#899089', '#ff683d', '#95287e', '#589542', '#ed60a3', '#55748e', '#d6e2c6'],
     level: 1,
     winningCombo: [0,3,1,6,4,2,7,8,5],
     winner: false,

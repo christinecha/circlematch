@@ -5,11 +5,11 @@ import React from 'react'
 class Cell extends React.Component {
 
     render() {
-        const { position, color, key, animation } = this.props
-        let border = '5px solid #eee'
+        const { cellSize, position, color, key, animation, borderWidth } = this.props
+        let border = borderWidth + ' solid #eee'
 
         if (color == 'transparent') {
-          border = '5px solid transparent'
+          border = borderWidth + ' solid transparent'
         }
         const style = {
           gridCell: {
@@ -22,8 +22,8 @@ class Cell extends React.Component {
             border: border,
             boxSizing: 'border-box',
             textAlign: 'center',
-            width: '33.33%',
-            height: '33.33%',
+            width: cellSize,
+            height: cellSize,
             display: 'inline-block',
             verticalAlign: 'middle',
             borderRadius: '100%'

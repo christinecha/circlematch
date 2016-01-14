@@ -14,19 +14,20 @@ export class ReactApp extends React.Component {
 
   componentDidMount() {
     window.addEventListener('keydown', (e) => {
-      const { dispatch, cellData, winningCombo, winner, level, modalIsOpen, animation } = this.props
+      const { dispatch, gridWidth, cellData, winningCombo, winner, level, modalIsOpen, animation } = this.props
       if (modalIsOpen == true) {
         dispatch(action.CLOSE_MODAL())
       } else {
-        dispatch(action.MOVE_CELLS(cellData.toJS(), e.keyCode, winningCombo.toJS()))
+        dispatch(action.MOVE_CELLS(gridWidth, cellData.toJS(), e.keyCode, winningCombo.toJS()))
       }
     })
   }
 
   componentDidUpdate() {
-    const { dispatch, winner, level, modalIsOpen, timerIsRunning } = this.props
+    const { dispatch, winner, level, modalIsOpen, gridWidth, timerIsRunning } = this.props
     if (winner == true) {
-      dispatch(action.SET_LEVEL(level + 1))
+      dispatch(action.SET_LEVEL(level + 1, gridWidth))
+      dispatch(action.OPEN_MODAL())
     } else if (timerIsRunning == false) {
       this.runTimer()
     }
@@ -50,13 +51,24 @@ export class ReactApp extends React.Component {
   }
 
   solvePuzzle() {
-    const { dispatch, cellData, winningCombo, level } = this.props
-    dispatch(action.SOLVE_PUZZLE(cellData, winningCombo, level))
+    const { dispatch, gridWidth, cellData, winningCombo, level } = this.props
+    dispatch(action.SOLVE_PUZZLE(gridWidth, cellData, winningCombo, level))
   }
 
   randomizeColors() {
     const { dispatch, gridWidth } = this.props
     dispatch(action.RANDOMIZE_COLORS(gridWidth))
+  }
+
+  resizeGrid(increment) {
+    const { dispatch, gridWidth, level } = this.props
+    let newGridWidth = gridWidth + increment
+    if (newGridWidth > 4 || gridWidth < 2) {
+      return false
+    } else {
+      dispatch(action.RESIZE_GRID(newGridWidth))
+      dispatch(action.SET_LEVEL(level, newGridWidth))
+    }
   }
 
   render() {
@@ -85,18 +97,20 @@ export class ReactApp extends React.Component {
             closeModal={() => this.closeModal()}/>
         </Modal>
         <Grid
-          width={gridWidth}
+          gridWidth={gridWidth}
           cellData={cellData}
           cellColors={cellColors}
           animation={animation} />
         <Sidebar
-          width={gridWidth}
+          gridWidth={gridWidth}
           cellColors={cellColors}
           level={level}
           winningCombo={winningCombo}
           onSolveButtonClick = {() => this.solvePuzzle()} />
         <Toolbar
           gridWidth={gridWidth}
+          resizeGridDown={() => this.resizeGrid(-1)}
+          resizeGridUp={() => this.resizeGrid(1)}
           randomizeColors={() => this.randomizeColors()} />
         <h2 style={style.timer}>
           00:{timeLeft}
