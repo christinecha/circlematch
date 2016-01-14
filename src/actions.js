@@ -1,14 +1,5 @@
-import * as helper from './helpers.js'
-
-export const HIGHLIGHT_CELL = (cellData, cellId) => {
-  cellData[cellId].color = '#00aeef'
-  return {
-    type: 'HIGHLIGHT_CELL',
-    data: {
-      cellData: cellData
-    }
-  }
-}
+import {moveCells} from './action_helpers/move_cells.js'
+import * as helper from './action_helpers/helpers.js'
 
 export const SOLVE_PUZZLE = (cellData, winningCombo, level) => {
   helper.solvePuzzle(cellData.toJS(),winningCombo.toJS())
@@ -22,55 +13,19 @@ export const SOLVE_PUZZLE = (cellData, winningCombo, level) => {
   }
 }
 
-export const MOVE_CELLS = (cellData, keyCode, winningCombo, animation) => {
-  let move = 0
-  animation = ['', '', '', '', '', '', '', '', '']
-  let animationCode = ''
+export const MOVE_CELLS = (cellData, keyCode, winningCombo) => {
+  return moveCells(cellData, keyCode, winningCombo)
+}
 
-  switch (keyCode) {
-    case 38: // up arrow
-      move = 3
-      animationCode = 'move-up .1s 1 ease'
-      break
-    case 40: // down arrow
-      move = -3
-      animationCode = 'move-down .1s 1 ease'
-      break
-    case 39: // right arrow
-      move = -1
-      animationCode = 'move-right .1s 1 ease'
-      break
-    case 37: // left arrow
-      move = 1
-      animationCode = 'move-left .1s 1 ease'
-      break
+export const TIMER = (timeLeft) => {
+  if (timeLeft < 10) {
+    timeLeft = '0' + timeLeft
   }
-
-  let emptyCell = cellData.indexOf(0)
-  if (helper.moveIsLegal(emptyCell, move)) {
-    let movingCell = emptyCell + move
-    cellData[emptyCell] = cellData[movingCell]
-    cellData[movingCell] = 0
-    animation[emptyCell] = animationCode
-  } else {
-    // nothing
-  }
-
-  const winner = () => {
-    for (let i = 0; i < cellData.length; i++) {
-      if (cellData[i] != winningCombo[i]) {
-        return false
-      }
-    }
-    return true
-  }
-
   return {
-    type: 'MOVE_CELLS',
+    type: 'TIMER',
     data: {
-      cellData: cellData,
-      winner: winner(),
-      animation: animation
+      timeLeft: timeLeft,
+      timerIsRunning: true
     }
   }
 }
@@ -84,7 +39,8 @@ export const SET_LEVEL = (level) => {
       level: level,
       winningCombo: newLevel,
       modalIsOpen: true,
-      autoSolved: false
+      autoSolved: false,
+      timerIsRunning: false
     }
   }
 }
@@ -93,7 +49,8 @@ export const CLOSE_MODAL = () => {
   return {
     type: 'CLOSE_MODAL',
     data: {
-      modalIsOpen: false
+      modalIsOpen: false,
+      timeLeft: 60
     }
   }
 }

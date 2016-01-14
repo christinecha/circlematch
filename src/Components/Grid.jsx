@@ -1,5 +1,6 @@
+"use strict"
+
 import React from 'react'
-import TileGrid from './TileGrid.jsx'
 import Cell from './Cell.jsx'
 
 let style = {

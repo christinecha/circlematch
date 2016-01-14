@@ -15,14 +15,14 @@ let style = {
   solveButton: {
     backgroundColor: '#eee',
     padding: '5px 10px',
-    width: '120px',
+    width: '105px',
     border: 'none',
     marginBottom: '10px'
   },
   grid: {
     backgroundColor: '#eee',
-    width: '100px',
-    height: '100px',
+    width: '85px',
+    height: '85px',
     padding: '10px',
     margin: '5px 10px 10px 10px'
   }

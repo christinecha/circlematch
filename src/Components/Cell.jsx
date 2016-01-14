@@ -1,7 +1,6 @@
 "use strict"
 
 import React from 'react'
-import Tile from './Tile.jsx'
 
 class Cell extends React.Component {
 

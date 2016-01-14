@@ -13,7 +13,7 @@ export class ReactApp extends React.Component {
 
   componentDidMount() {
     window.addEventListener('keydown', (e) => {
-      const { dispatch, cellData, winningCombo, winner, level, modalIsOpen } = this.props
+      const { dispatch, cellData, winningCombo, winner, level, modalIsOpen, animation } = this.props
       if (modalIsOpen == true) {
         dispatch(action.CLOSE_MODAL())
       } else {
@@ -23,30 +23,24 @@ export class ReactApp extends React.Component {
   }
 
   componentDidUpdate() {
-    const { dispatch, winner, level } = this.props
+    const { dispatch, winner, level, modalIsOpen, timerIsRunning } = this.props
     if (winner == true) {
       dispatch(action.SET_LEVEL(level + 1))
+    } else if (timerIsRunning == false) {
+      this.runTimer()
     }
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', (e) => {
-      const { dispatch, cellData, winningCombo, winner, level, modalIsOpen, animation } = this.props
-      if (modalIsOpen == true) {
-        dispatch(action.CLOSE_MODAL())
+  runTimer() {
+    let timer = setInterval(() => {
+      const { dispatch, timeLeft, winner, modalIsOpen } = this.props
+      if (winner == true || parseInt(timeLeft) <= 0 || modalIsOpen == true ) {
+        clearInterval(timer)
       } else {
-        dispatch(action.MOVE_CELLS(cellData.toJS(), e.keyCode, winningCombo.toJS(), animation))
+        let newTimeLeft = parseInt(timeLeft) - 1
+        dispatch(action.TIMER(newTimeLeft))
       }
-    })
-  }
-
-  displayWinner() {
-    let winner = this.props.winner
-    if (winner == true) {
-      return 'You\'re a winner!'
-    } else {
-      return 'Keep going...'
-    }
+    }, 1000)
   }
 
   closeModal() {
@@ -61,15 +55,17 @@ export class ReactApp extends React.Component {
 
   render() {
     const {
-      gridWidth,
-      cellData,
-      cellColors,
-      level,
-      winningCombo,
-      winner,
-      modalIsOpen,
+      animation,
       autoSolved,
-      animation
+      cellColors,
+      cellData,
+      gridWidth,
+      level,
+      modalIsOpen,
+      winner,
+      winningCombo,
+      timeLeft,
+      timerIsRunning
     } = this.props
     return (
       <div>
@@ -93,8 +89,8 @@ export class ReactApp extends React.Component {
           level={level}
           winningCombo={winningCombo}
           onSolveButtonClick = {() => this.solvePuzzle()} />
-        <h2 style={style.winnerDisplay}>
-          {this.displayWinner()}
+        <h2 style={style.timer}>
+          00:{timeLeft}
         </h2>
         <br />
         <p>NOTE \\ Only works on desktop. Mobile coming soon!</p>
@@ -113,7 +109,9 @@ function mapStateToProps(state) {
     winner: state.get('winner'),
     modalIsOpen: state.get('modalIsOpen'),
     autoSolved: state.get('autoSolved'),
-    animation: state.get('animation')
+    animation: state.get('animation'),
+    timeLeft: state.get('timeLeft'),
+    timerIsRunning: state.get('timerIsRunning')
   }
 }
 

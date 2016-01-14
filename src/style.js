@@ -20,9 +20,10 @@ export const modal = {
   }
 }
 
-export const winnerDisplay = {
+export const timer = {
   backgroundColor : '#eee',
   width           : '100%',
   marginTop       : '20px',
-  padding         : '20px 0'
+  padding         : '10px 0',
+  fontSize        : '40px'
 }

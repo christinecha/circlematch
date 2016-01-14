@@ -21,7 +21,9 @@ store.dispatch({
     winningCombo: [0,3,1,6,4,2,7,8,5],
     winner: false,
     modalIsOpen: false,
-    autoSolved: false
+    autoSolved: false,
+    timeLeft: 60,
+    timerIsRunning: false,
   }
 })
 
