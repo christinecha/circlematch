@@ -26,9 +26,9 @@ export class ReactApp extends React.Component {
   }
 
   componentDidUpdate() {
-    const { dispatch, winner, level, modalIsOpen, gridWidth, timeLeft, timerIsRunning } = this.props
+    const { dispatch, autoSolved, winner, level, modalIsOpen, gridWidth, timeLeft, timerIsRunning, score } = this.props
     if (winner == true) {
-      dispatch(action.SET_LEVEL(level + 1, gridWidth))
+      dispatch(action.SET_LEVEL(level + 1, gridWidth, score, timeLeft, autoSolved))
       dispatch(action.OPEN_MODAL())
     } else if (timerIsRunning == false && timeLeft == 60 && timerLaunched == false) {
       this.runTimer()
@@ -65,13 +65,13 @@ export class ReactApp extends React.Component {
   }
 
   resizeGrid(increment) {
-    const { dispatch, gridWidth, level } = this.props
+    const { dispatch, autoSolved, gridWidth, level, score, timeLeft } = this.props
     let newGridWidth = gridWidth + increment
     if (newGridWidth > 4 || gridWidth < 2) {
       return false
     } else {
       dispatch(action.RESIZE_GRID(newGridWidth))
-      dispatch(action.SET_LEVEL(level, newGridWidth))
+      dispatch(action.SET_LEVEL(level, newGridWidth, score, timeLeft, autoSolved))
     }
   }
 
@@ -84,10 +84,11 @@ export class ReactApp extends React.Component {
       gridWidth,
       level,
       modalIsOpen,
-      winner,
-      winningCombo,
+      score,
+      timerIsRunning,
       timeLeft,
-      timerIsRunning
+      winner,
+      winningCombo
     } = this.props
     return (
       <div>
@@ -110,6 +111,7 @@ export class ReactApp extends React.Component {
           cellColors={cellColors}
           level={level}
           winningCombo={winningCombo}
+          score={score}
           onSolveButtonClick = {() => this.solvePuzzle()} />
         <Toolbar
           gridWidth={gridWidth}
@@ -128,17 +130,18 @@ export class ReactApp extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    gridWidth: state.get('gridWidth'),
-    cellData: state.get('cellData'),
-    cellColors: state.get('cellColors'),
-    level: state.get('level'),
-    winningCombo: state.get('winningCombo'),
-    winner: state.get('winner'),
-    modalIsOpen: state.get('modalIsOpen'),
-    autoSolved: state.get('autoSolved'),
     animation: state.get('animation'),
+    autoSolved: state.get('autoSolved'),
+    cellColors: state.get('cellColors'),
+    cellData: state.get('cellData'),
+    gridWidth: state.get('gridWidth'),
+    level: state.get('level'),
+    modalIsOpen: state.get('modalIsOpen'),
+    score: state.get('score'),
+    timerIsRunning: state.get('timerIsRunning'),
     timeLeft: state.get('timeLeft'),
-    timerIsRunning: state.get('timerIsRunning')
+    winningCombo: state.get('winningCombo'),
+    winner: state.get('winner')
   }
 }
 

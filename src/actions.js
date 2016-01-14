@@ -30,8 +30,22 @@ export const TIMER = (timeLeft) => {
   }
 }
 
-export const SET_LEVEL = (level, gridWidth) => {
+export const SET_LEVEL = (level, gridWidth, score, timeLeft, autoSolved) => {
   let newLevel = helper.randomLevel(gridWidth)
+  let points = 0
+  if (autoSolved == false) {
+    if (timeLeft < 60 && timeLeft > 45) {
+      points = 50 * gridWidth
+    } else if (timeLeft < 46 && timeLeft > 30) {
+      points = 30 * gridWidth
+    } else if (timeLeft < 31 && timeLeft > 15) {
+      points = 20 * gridWidth
+    } else if (timeLeft < 16 && timeLeft > 0) {
+      points = 10 * gridWidth
+    }
+  }
+  let newScore = score + points
+
   return {
     type: 'SET_LEVEL',
     data: {
@@ -40,7 +54,8 @@ export const SET_LEVEL = (level, gridWidth) => {
       winningCombo: newLevel,
       autoSolved: false,
       timerIsRunning: false,
-      timeLeft: 60
+      timeLeft: 60,
+      score: newScore
     }
   }
 }
@@ -77,6 +92,7 @@ export const RANDOMIZE_COLORS = (gridWidth) => {
 export const RESIZE_GRID = (gridWidth) => {
   let numOfCells = gridWidth * gridWidth
   let cellData = []
+  let cellColors = ['transparent', '#a86ed4', '#d3b8bc', '#ffa56c', '#ffe273', '#b1c559', '#ed92a3', '#55bbc8', '#5585c6', '#8a6439', '#899089', '#ff683d', '#95287e', '#589542', '#ed60a3', '#55748e', '#d6e2c6']
   let animation = []
   for (let i = 0; i < numOfCells; i++) {
     cellData.push(i)
@@ -86,6 +102,7 @@ export const RESIZE_GRID = (gridWidth) => {
     type: 'RESIZE_GRID',
     data: {
       cellData: cellData,
+      cellColors: cellColors,
       gridWidth: gridWidth,
       winner: false
     }

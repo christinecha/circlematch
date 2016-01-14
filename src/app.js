@@ -24,6 +24,7 @@ store.dispatch({
     autoSolved: false,
     timeLeft: 60,
     timerIsRunning: false,
+    score: 0
   }
 })
 

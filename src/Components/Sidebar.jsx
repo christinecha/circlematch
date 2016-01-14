@@ -19,10 +19,24 @@ class Sidebar extends React.Component {
   }
 
   render() {
-    const { gridWidth, cellData, cellColors, animation } = this.props
+    const { gridWidth, cellData, cellColors, animation, score } = this.props
     let gridSize = (gridWidth * 20) + 'px'
     let style = {
       container: {
+        display: 'inline-block'
+      },
+      scoreboard: {
+        fontSize: '18px',
+        padding: '5px',
+        backgroundColor: '#55bbc8',
+        color: 'white',
+        width: '134px',
+        marginLeft: '20px',
+        score: {
+          fontSize: '22px'
+        }
+      },
+      levelInfo: {
         marginLeft: '20px',
         width: '140px',
         display: 'inline-block',
@@ -50,18 +64,23 @@ class Sidebar extends React.Component {
     }
     return (
       <div style={style.container}>
-        <div style={style.level}>
-          <h2>LEVEL {this.props.level}</h2>
+        <div style={style.scoreboard}>
+          score: <span style={style.scoreboard.score}>{score}</span>
         </div>
-        <h4>YOUR GOAL</h4>
-        <div style={style.grid}>
-          {this.getCells()}
+        <div style={style.levelInfo}>
+          <div style={style.level}>
+            <h2>LEVEL {this.props.level}</h2>
+          </div>
+          <h4>YOUR GOAL</h4>
+          <div style={style.grid}>
+            {this.getCells()}
+          </div>
+          <button
+            style={style.solveButton}
+            onClick={this.props.onSolveButtonClick}>
+            <h3>SOLVE</h3>
+          </button>
         </div>
-        <button
-          style={style.solveButton}
-          onClick={this.props.onSolveButtonClick}>
-          <h3>SOLVE</h3>
-        </button>
       </div>
     )
   }
