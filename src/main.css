@@ -34,6 +34,11 @@ div {
   margin: 0 auto;
 }
 
+.hover1:hover {
+  background-color: #b1c559 !important;
+  color: white;
+}
+
 @keyframes move-up { 0% {transform: translateY(66px);} 100% {transform: translateY(0);} }
 @-webkit-keyframes move-up { 0% {-webkit-transform: translateY(66px);} 100% {-webkit-transform: translateY(0);} }
 @-moz-keyframes move-up { 0% {-moz-transform: translateY(66px);} 100% {-moz-transform: translateY(0);} }

@@ -19,7 +19,7 @@ class Grid extends React.Component {
 
   getCells() {
     const { width, cellData, cellColors, animation } = this.props
-
+    console.log(cellColors.toJS())
     return cellData.toJS().map((cell, i) => {
       return (
         <Cell

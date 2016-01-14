@@ -45,6 +45,26 @@ export const SET_LEVEL = (level) => {
   }
 }
 
+export const RANDOMIZE_COLORS = (gridWidth) => {
+  let characters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
+  let numOfColors = (gridWidth * gridWidth) - 1
+  let colorScheme = ['transparent']
+  for (let i = 0; i < numOfColors; i++) {
+    let hexCode = '#'
+    for (let i = 0; i < 6; i++) {
+       let random = Math.round(Math.random() * (characters.length - 1))
+       hexCode += characters[random]
+    }
+    colorScheme.push(hexCode)
+  }
+  return {
+    type: 'RANDOMIZE_COLORS',
+    data: {
+      cellColors: colorScheme
+    }
+  }
+}
+
 export const CLOSE_MODAL = () => {
   return {
     type: 'CLOSE_MODAL',

@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import Modal from 'react-modal'
 import Grid from './Grid.jsx'
 import Sidebar from './Sidebar.jsx'
+import Toolbar from './Toolbar.jsx'
 import _NextLevel from './_NextLevel.jsx'
 import * as style from '../style.js'
 import * as action from '../actions.js'
@@ -53,6 +54,11 @@ export class ReactApp extends React.Component {
     dispatch(action.SOLVE_PUZZLE(cellData, winningCombo, level))
   }
 
+  randomizeColors() {
+    const { dispatch, gridWidth } = this.props
+    dispatch(action.RANDOMIZE_COLORS(gridWidth))
+  }
+
   render() {
     const {
       animation,
@@ -89,6 +95,9 @@ export class ReactApp extends React.Component {
           level={level}
           winningCombo={winningCombo}
           onSolveButtonClick = {() => this.solvePuzzle()} />
+        <Toolbar
+          gridWidth={gridWidth}
+          randomizeColors={() => this.randomizeColors()} />
         <h2 style={style.timer}>
           00:{timeLeft}
         </h2>

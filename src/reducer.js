@@ -5,7 +5,7 @@ function setState(state, newData) {
 }
 
 function reducer(state = Map(), action) {
-  console.log(action.type, action.data)
+  console.log(action.type)
   switch (action.type) {
     case 'SET_INITIAL_STATE':
       return setState(state, action.data)
@@ -18,6 +18,8 @@ function reducer(state = Map(), action) {
     case 'CLOSE_MODAL':
       return setState(state, action.data)
     case 'SOLVE_PUZZLE':
+      return setState(state, action.data)
+    case 'RANDOMIZE_COLORS':
       return setState(state, action.data)
   }
   return state
