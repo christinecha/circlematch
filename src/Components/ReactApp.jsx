@@ -10,6 +10,8 @@ import _NextLevel from './_NextLevel.jsx'
 import * as style from '../style.js'
 import * as action from '../actions.js'
 
+let timerLaunched = false
+
 export class ReactApp extends React.Component {
 
   componentDidMount() {
@@ -24,20 +26,22 @@ export class ReactApp extends React.Component {
   }
 
   componentDidUpdate() {
-    const { dispatch, winner, level, modalIsOpen, gridWidth, timerIsRunning } = this.props
+    const { dispatch, winner, level, modalIsOpen, gridWidth, timeLeft, timerIsRunning } = this.props
     if (winner == true) {
       dispatch(action.SET_LEVEL(level + 1, gridWidth))
       dispatch(action.OPEN_MODAL())
-    } else if (timerIsRunning == false) {
+    } else if (timerIsRunning == false && timeLeft == 60 && timerLaunched == false) {
       this.runTimer()
     }
   }
 
   runTimer() {
+    timerLaunched = true
     let timer = setInterval(() => {
       const { dispatch, timeLeft, winner, modalIsOpen } = this.props
-      if (winner == true || parseInt(timeLeft) <= 0 || modalIsOpen == true ) {
+      if (winner == true || parseInt(timeLeft) <= 0 || modalIsOpen == true) {
         clearInterval(timer)
+        timerLaunched = false
       } else {
         let newTimeLeft = parseInt(timeLeft) - 1
         dispatch(action.TIMER(newTimeLeft))

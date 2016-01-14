@@ -49,8 +49,7 @@ export const OPEN_MODAL = () => {
   return {
     type: 'OPEN_MODAL',
     data: {
-      modalIsOpen: true,
-      timerIsRunning: false
+      modalIsOpen: true
     }
   }
 }
