@@ -24,19 +24,20 @@ export const moveCells = (gridWidth, cellData, keyCode, winningCombo) => {
       break
   }
 
-  let emptyCell = cellData.indexOf(0)
+  let cellDataArray = cellData.split('')
+  let emptyCell = cellDataArray.indexOf('0')
   if (helper.moveIsLegal(gridWidth, emptyCell, move)) {
     let movingCell = emptyCell + move
-    cellData[emptyCell] = cellData[movingCell]
-    cellData[movingCell] = 0
+    cellDataArray[emptyCell] = cellDataArray[movingCell]
+    cellDataArray[movingCell] = '0'
     animation[emptyCell] = animationCode
   } else {
     // nothing
   }
 
   const winner = () => {
-    for (let i = 0; i < cellData.length; i++) {
-      if (cellData[i] != winningCombo[i]) {
+    for (let i = 0; i < cellDataArray.length; i++) {
+      if (cellDataArray[i] != winningCombo[i]) {
         return false
       }
     }
@@ -46,7 +47,7 @@ export const moveCells = (gridWidth, cellData, keyCode, winningCombo) => {
   return {
     type: 'MOVE_CELLS',
     data: {
-      cellData: cellData,
+      cellData: cellDataArray.join(''),
       winner: winner(),
       animation: animation
     }

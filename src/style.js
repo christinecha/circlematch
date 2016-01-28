@@ -47,7 +47,7 @@ export const toolbar = {
   },
   value: {
     padding         : '0 10px',
-    fontSize        : '22px'
+    fontSize        : '22px',
   },
   button: {
     backgroundColor : '#eee',

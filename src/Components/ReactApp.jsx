@@ -3,13 +3,18 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'react-modal'
+import Firebase from "firebase"
+
 import Grid from './Grid.jsx'
 import Sidebar from './Sidebar.jsx'
 import Toolbar from './Toolbar.jsx'
 import _NextLevel from './_NextLevel.jsx'
 import * as style from '../style.js'
 import * as action from '../actions.js'
+import * as helper from '../helpers/helpers.js'
 
+let ref = new Firebase("https://circlematch.firebaseio.com/")
+let originalState = '012345678'
 let timerLaunched = false
 
 export class ReactApp extends React.Component {
@@ -18,22 +23,40 @@ export class ReactApp extends React.Component {
     window.addEventListener('keydown', (e) => {
       const { dispatch, gridWidth, cellData, winningCombo, winner, level, modalIsOpen, animation } = this.props
       if (modalIsOpen == true) {
-        dispatch(action.CLOSE_MODAL())
+        this.closeModal()
       } else {
-        dispatch(action.MOVE_CELLS(gridWidth, cellData.toJS(), e.keyCode, winningCombo.toJS()))
+        dispatch(action.MOVE_CELLS(gridWidth, cellData, e.keyCode, winningCombo))
       }
     })
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const { dispatch, autoSolved, winner, level, modalIsOpen, gridWidth, timeLeft, timerIsRunning, score } = this.props
-    if (winner == true) {
-      dispatch(action.SET_LEVEL(level + 1, gridWidth, score, timeLeft, autoSolved))
+    if (prevProps.winner == false && winner == true) {
       dispatch(action.OPEN_MODAL())
     } else if (timerIsRunning == false && timeLeft == 60 && timerLaunched == false) {
       this.runTimer()
     }
   }
+
+  setNewLevel() {
+    const { dispatch, autoSolved, score, timeLeft } = this.props
+    // get all possilble levels with X difficulty
+    // randomly choose one of those
+    // get solution for that one
+    helper.getLevel(5).then((response) => {
+      console.log(response)
+      let puzzle = response.puzzle
+      let puzzleInfo = response.puzzleInfo.solution
+
+      // dispatch an action that:
+        // - updates the new puzzle combo
+        // - resets winner to false
+        // - updates the board to original
+      dispatch(action.SET_LEVEL(autoSolved, puzzle, puzzleInfo, score, timeLeft))
+    })
+  }
+
 
   runTimer() {
     timerLaunched = true
@@ -52,11 +75,12 @@ export class ReactApp extends React.Component {
   closeModal() {
     const { dispatch } = this.props
     dispatch(action.CLOSE_MODAL())
+    this.setNewLevel()
   }
 
   solvePuzzle() {
-    const { dispatch, gridWidth, cellData, winningCombo, level } = this.props
-    dispatch(action.SOLVE_PUZZLE(gridWidth, cellData, winningCombo, level))
+    const { dispatch, gridWidth, cellData, puzzleInfo, winningCombo, level } = this.props
+    dispatch(action.SOLVE_PUZZLE(gridWidth, cellData, winningCombo, puzzleInfo, level))
   }
 
   randomizeColors() {
@@ -71,7 +95,7 @@ export class ReactApp extends React.Component {
       return false
     } else {
       dispatch(action.RESIZE_GRID(newGridWidth))
-      dispatch(action.SET_LEVEL(level, newGridWidth, score, timeLeft, autoSolved))
+      dispatch(action.SET_LEVEL(level, newGridWidth, score, 0, autoSolved))
     }
   }
 
@@ -79,7 +103,7 @@ export class ReactApp extends React.Component {
     const {
       animation,
       autoSolved,
-      cellColors,
+      cellColor,
       cellData,
       gridWidth,
       level,
@@ -90,6 +114,10 @@ export class ReactApp extends React.Component {
       winner,
       winningCombo
     } = this.props
+
+    let timerColor = {
+
+    }
     return (
       <div>
         <h2>circlematch</h2>
@@ -104,11 +132,11 @@ export class ReactApp extends React.Component {
         <Grid
           gridWidth={gridWidth}
           cellData={cellData}
-          cellColors={cellColors}
+          cellColor={cellColor}
           animation={animation} />
         <Sidebar
           gridWidth={gridWidth}
-          cellColors={cellColors}
+          cellColor={cellColor}
           level={level}
           winningCombo={winningCombo}
           score={score}
@@ -132,11 +160,12 @@ function mapStateToProps(state) {
   return {
     animation: state.get('animation'),
     autoSolved: state.get('autoSolved'),
-    cellColors: state.get('cellColors'),
+    cellColor: state.get('cellColor'),
     cellData: state.get('cellData'),
     gridWidth: state.get('gridWidth'),
     level: state.get('level'),
     modalIsOpen: state.get('modalIsOpen'),
+    puzzleInfo: state.get('puzzleInfo'),
     score: state.get('score'),
     timerIsRunning: state.get('timerIsRunning'),
     timeLeft: state.get('timeLeft'),

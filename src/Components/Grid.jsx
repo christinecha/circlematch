@@ -6,23 +6,25 @@ import Cell from './Cell.jsx'
 class Grid extends React.Component {
 
   getCells() {
-    const { cellData, cellColors, animation } = this.props
+    const { cellData, cellColor, animation } = this.props
     let cellSize = (60) + 'px'
-    return cellData.toJS().map((cell, i) => {
+    let cellDataArray = cellData.split('')
+    return cellDataArray.map((cell, i) => {
       return (
         <Cell
-        color={cellColors.toJS()[cell]}
-        cellSize={cellSize}
-        position={cell}
-        borderWidth='5px'
-        key={i}
-        animation={animation.toJS()[i]} />
+          opacity={(cell / 7) - (1/12)}
+          cellColor={cellColor}
+          cellSize={cellSize}
+          position={cell}
+          borderWidth='5px'
+          key={i}
+          animation={animation.toJS()[i]} />
       )
     })
   }
 
   render() {
-    const { gridWidth, cellData, cellColors, animation } = this.props
+    const { gridWidth, cellData, cellColor, animation } = this.props
     let gridSize = (gridWidth * 60) + 'px'
     let style = {
       gridContainer: {

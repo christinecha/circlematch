@@ -5,12 +5,9 @@ import React from 'react'
 class Cell extends React.Component {
 
     render() {
-        const { cellSize, position, color, key, animation, borderWidth } = this.props
+        const { cellSize, cellColor, position, key, animation, borderWidth, opacity } = this.props
         let border = borderWidth + ' solid #eee'
 
-        if (color == 'transparent') {
-          border = borderWidth + ' solid transparent'
-        }
         const style = {
           gridCell: {
             position: 'relative',
@@ -18,7 +15,8 @@ class Cell extends React.Component {
             WebkitAnimation: animation,
             MozAnimation: animation,
             OAnimation: animation,
-            backgroundColor: color,
+            backgroundColor: cellColor,
+            opacity: opacity,
             border: border,
             boxSizing: 'border-box',
             textAlign: 'center',

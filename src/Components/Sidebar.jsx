@@ -4,13 +4,15 @@ import Cell from './Cell.jsx'
 class Sidebar extends React.Component {
 
   getCells() {
-    const { gridWidth, winningCombo, cellColors } = this.props
+    const { gridWidth, winningCombo, cellColor } = this.props
     let cellSize = (20) + 'px'
-    return winningCombo.toJS().map((cell, i) => {
+    let winningComboArray = winningCombo.split('')
+    return winningComboArray.map((cell, i) => {
       return (
         <Cell
+          cellColor={cellColor}
           cellSize={cellSize}
-          color={cellColors.toJS()[cell]}
+          opacity={(cell / 8)}
           position={cell}
           borderWidth='2px'
           key={i} />
@@ -19,7 +21,7 @@ class Sidebar extends React.Component {
   }
 
   render() {
-    const { gridWidth, cellData, cellColors, animation, score } = this.props
+    const { gridWidth, cellData, cellColor, animation, score } = this.props
     let gridSize = (gridWidth * 20) + 'px'
     let style = {
       container: {
@@ -77,6 +79,7 @@ class Sidebar extends React.Component {
           </div>
           <button
             style={style.solveButton}
+            className="hover1"
             onClick={this.props.onSolveButtonClick}>
             <h3>SOLVE</h3>
           </button>

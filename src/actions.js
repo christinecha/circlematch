@@ -1,8 +1,9 @@
-import {moveCells} from './action_helpers/move_cells.js'
-import * as helper from './action_helpers/helpers.js'
+import {moveCells} from './helpers/move_cells.js'
+import * as helper from './helpers/helpers.js'
+import * as solutions from './helpers/solutions.js'
 
-export const SOLVE_PUZZLE = (gridWidth, cellData, winningCombo, level) => {
-  helper.solvePuzzle(gridWidth, cellData.toJS(),winningCombo.toJS())
+export const SOLVE_PUZZLE = (gridWidth, cellData, puzzle, puzzleInfo, level) => {
+  console.log(puzzleInfo.toJS())
   return {
     type: 'SOLVE_PUZZLE',
     data: {
@@ -30,10 +31,11 @@ export const TIMER = (timeLeft) => {
   }
 }
 
-export const SET_LEVEL = (level, gridWidth, score, timeLeft, autoSolved) => {
-  let newLevel = helper.randomLevel(gridWidth)
+export const SET_LEVEL = (autoSolved, puzzle, puzzleInfo, score, timeLeft) => {
+
   let points = 0
   if (autoSolved == false) {
+    points+= 50
     if (timeLeft < 60 && timeLeft > 45) {
       points = 50 * gridWidth
     } else if (timeLeft < 46 && timeLeft > 30) {
@@ -50,8 +52,9 @@ export const SET_LEVEL = (level, gridWidth, score, timeLeft, autoSolved) => {
     type: 'SET_LEVEL',
     data: {
       winner: false,
-      level: level,
-      winningCombo: newLevel,
+      level: 5,
+      cellData: puzzle,
+      puzzleInfo: puzzleInfo,
       autoSolved: false,
       timerIsRunning: false,
       timeLeft: 60,
@@ -71,43 +74,39 @@ export const OPEN_MODAL = () => {
 
 export const RANDOMIZE_COLORS = (gridWidth) => {
   let characters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
-  let numOfColors = (gridWidth * gridWidth) - 1
-  let colorScheme = ['transparent']
-  for (let i = 0; i < numOfColors; i++) {
-    let hexCode = '#'
-    for (let i = 0; i < 6; i++) {
-       let random = Math.round(Math.random() * (characters.length - 1))
-       hexCode += characters[random]
-    }
-    colorScheme.push(hexCode)
+  let hexCode = '#'
+  for (let i = 0; i < 6; i++) {
+     let random = Math.round(Math.random() * (characters.length - 1))
+     hexCode += characters[random]
   }
   return {
     type: 'RANDOMIZE_COLORS',
     data: {
-      cellColors: colorScheme
+      cellColor: hexCode
     }
   }
 }
 
-export const RESIZE_GRID = (gridWidth) => {
-  let numOfCells = gridWidth * gridWidth
-  let cellData = []
-  let cellColors = ['transparent', '#a86ed4', '#d3b8bc', '#ffa56c', '#ffe273', '#b1c559', '#ed92a3', '#55bbc8', '#5585c6', '#8a6439', '#899089', '#ff683d', '#95287e', '#589542', '#ed60a3', '#55748e', '#d6e2c6']
-  let animation = []
-  for (let i = 0; i < numOfCells; i++) {
-    cellData.push(i)
-    animation.push('')
-  }
-  return {
-    type: 'RESIZE_GRID',
-    data: {
-      cellData: cellData,
-      cellColors: cellColors,
-      gridWidth: gridWidth,
-      winner: false
-    }
-  }
-}
+// export const RESIZE_GRID = (gridWidth) => {
+//   let numOfCells = gridWidth * gridWidth
+//   let cellData = []
+//   let cellColor = ['transparent', '#a86ed4', '#d3b8bc', '#ffa56c', '#ffe273', '#b1c559', '#ed92a3', '#55bbc8', '#5585c6', '#8a6439', '#899089', '#ff683d', '#95287e', '#589542', '#ed60a3', '#55748e', '#d6e2c6']
+//   let animation = []
+//   for (let i = 0; i < numOfCells; i++) {
+//     cellData.push(i)
+//     animation.push('')
+//   }
+//   return {
+//     type: 'RESIZE_GRID',
+//     data: {
+//       cellData: cellData,
+//       cellColor: cellColor,
+//       gridWidth: gridWidth,
+//       winner: false,
+//       timeLeft: 0
+//     }
+//   }
+// }
 
 export const CLOSE_MODAL = () => {
   return {
