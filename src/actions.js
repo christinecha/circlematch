@@ -31,28 +31,33 @@ export const TIMER = (timeLeft) => {
   }
 }
 
-export const SET_LEVEL = (autoSolved, puzzle, puzzleInfo, score, timeLeft) => {
+export const SET_LEVEL = (autoSolved, level, puzzle, puzzleInfo, score, timeLeft) => {
 
   let points = 0
+  let newLevel = level + 1
+
   if (autoSolved == false) {
     points+= 50
     if (timeLeft < 60 && timeLeft > 45) {
-      points = 50 * gridWidth
+      points = 50 * level
     } else if (timeLeft < 46 && timeLeft > 30) {
-      points = 30 * gridWidth
+      points = 30 * level
     } else if (timeLeft < 31 && timeLeft > 15) {
-      points = 20 * gridWidth
+      points = 20 * level
     } else if (timeLeft < 16 && timeLeft > 0) {
-      points = 10 * gridWidth
+      points = 10 * level
     }
+  } else {
+    newLevel = level
   }
+
   let newScore = score + points
 
   return {
     type: 'SET_LEVEL',
     data: {
       winner: false,
-      level: 5,
+      level: newLevel,
       cellData: puzzle,
       puzzleInfo: puzzleInfo,
       autoSolved: false,

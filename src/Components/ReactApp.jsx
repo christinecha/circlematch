@@ -40,11 +40,11 @@ export class ReactApp extends React.Component {
   }
 
   setNewLevel() {
-    const { dispatch, autoSolved, score, timeLeft } = this.props
+    const { dispatch, autoSolved, level, score, timeLeft } = this.props
     // get all possilble levels with X difficulty
     // randomly choose one of those
     // get solution for that one
-    helper.getLevel(5).then((response) => {
+    helper.getLevel(level).then((response) => {
       console.log(response)
       let puzzle = response.puzzle
       let puzzleInfo = response.puzzleInfo.solution
@@ -53,7 +53,7 @@ export class ReactApp extends React.Component {
         // - updates the new puzzle combo
         // - resets winner to false
         // - updates the board to original
-      dispatch(action.SET_LEVEL(autoSolved, puzzle, puzzleInfo, score, timeLeft))
+      dispatch(action.SET_LEVEL(autoSolved, level, puzzle, puzzleInfo, score, timeLeft))
     })
   }
 
