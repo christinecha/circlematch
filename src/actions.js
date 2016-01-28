@@ -9,7 +9,7 @@ export const SOLVE_PUZZLE = (gridWidth, cellData, puzzle, puzzleInfo, level) => 
     data: {
       winner: true,
       autoSolved: true,
-      level: level - 1
+      level: level
     }
   }
 }
