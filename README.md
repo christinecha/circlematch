@@ -1,4 +1,4 @@
-# slide-puzzle-react
+# circlematch
 A minimalistic twist on the classic 8-piece slider puzzle, built with React / Redux.
 
 <img src="/src/assets/screenshot1.png" width="300">
