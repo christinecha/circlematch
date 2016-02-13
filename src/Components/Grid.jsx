@@ -6,45 +6,55 @@ import Cell from './Cell.jsx'
 class Grid extends React.Component {
 
   getCells() {
-    const { cellData, cellColor, animation } = this.props
-    let cellSize = (60) + 'px'
+    const { animations, cellData, colorScheme } = this.props
+    let cellSize = 80
     let cellDataArray = cellData.split('')
+
     return cellDataArray.map((cell, i) => {
+
+      let cellAnimation = ''
+      let opacity = cell / 8
+
       return (
         <Cell
-          opacity={(cell / 7) - (1/12)}
-          cellColor={cellColor}
+          animation={animations.toJS()[i]}
+          opacity={opacity}
+          color={colorScheme.toJS().cell}
           cellSize={cellSize}
           position={cell}
-          borderWidth='5px'
-          key={i}
-          animation={animation.toJS()[i]} />
+          borderWidth={5}
+          index={i}
+          key={i} />
       )
     })
   }
 
   render() {
-    const { gridWidth, cellData, cellColor, animation } = this.props
-    let gridSize = (gridWidth * 60) + 'px'
-    let style = {
-      gridContainer: {
-        display: 'inline-block',
-      },
-      grid: {
-        width: gridSize,
-        height: gridSize,
-        backgroundColor: '#eee',
-        padding: '10px'
-      }
-    }
-
+    const { gridWidth, cellData, colorScheme, animation, onCellResponderGrant, onCellResponderRelease } = this.props
     return (
-      <div style={style.gridContainer}>
-        <div style={style.grid}>
+      <div style={styles.container}>
+        <div style={styles.grid}>
           {this.getCells()}
         </div>
       </div>
     )
+  }
+}
+
+let styles = {
+  container: {
+    width: '100%'
+  },
+  grid: {
+    width: '290px',
+    height: '290px',
+    padding: '10px',
+    margin: '0 auto'
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
   }
 }
 

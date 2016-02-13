@@ -8,7 +8,7 @@ body, * {
 }
 
 body {
-  margin-top: 50px;
+  color: #888;
 }
 
 h2 {
@@ -19,11 +19,11 @@ h2 {
 
 a {
   text-decoration: none;
-  color: #a86ed4;
+  color: #aaa;
 }
 
 a:hover {
-  color: #ffa56c;
+  color: #bbb;
 }
 
 div {
@@ -34,9 +34,8 @@ div {
   margin: 0 auto;
 }
 
-.hover1:hover {
-  background-color: #b1c559 !important;
-  color: white;
+.menu-option:hover {
+  opacity: .8;
 }
 
 @keyframes move-up { 0% {transform: translateY(100%);} 100% {transform: translateY(0);} }

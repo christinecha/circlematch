@@ -47,7 +47,7 @@ class Sidebar extends React.Component {
       level: {
         backgroundColor: '#eee',
         padding: '5px 0',
-        marginBottom: '10px'
+        marginBottom: '4px'
       },
       solveButton: {
         backgroundColor: '#eee',

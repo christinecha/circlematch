@@ -1,15 +1,15 @@
 import {moveCells} from './helpers/move_cells.js'
 import * as helper from './helpers/helpers.js'
-import * as solutions from './helpers/solutions.js'
+import {solutions} from './solutions.js'
 
-export const SOLVE_PUZZLE = (gridWidth, cellData, puzzle, puzzleInfo, level) => {
-  console.log(puzzleInfo.toJS())
+export const SOLVE_PUZZLE = (cellData, level) => {
+  // helper.solvePuzzle(gridWidth, cellData,winningCombo)
   return {
     type: 'SOLVE_PUZZLE',
     data: {
       winner: true,
       autoSolved: true,
-      level: level
+      level: level - 1
     }
   }
 }
@@ -31,39 +31,38 @@ export const TIMER = (timeLeft) => {
   }
 }
 
-export const SET_LEVEL = (autoSolved, level, puzzle, puzzleInfo, score, timeLeft) => {
-
+export const SET_LEVEL = (level, gridWidth, score, timeLeft, autoSolved) => {
+  // let newLevelData = solutions[level][newLevel]
+  // console.log(newLevelData)
   let points = 0
-  let newLevel = level + 1
-
   if (autoSolved == false) {
-    points+= 50
-    if (timeLeft < 60 && timeLeft > 45) {
-      points = 50 * level
-    } else if (timeLeft < 46 && timeLeft > 30) {
-      points = 30 * level
-    } else if (timeLeft < 31 && timeLeft > 15) {
-      points = 20 * level
-    } else if (timeLeft < 16 && timeLeft > 0) {
-      points = 10 * level
+    points = helper.getPoints(level, timeLeft)
+  }
+  let newScore = score + points
+  let newLevel = Math.floor(newScore / 1000) + 1
+
+  if (solutions.length <= level) { // if you completed the last level
+    return {
+      type: 'GAME_COMPLETE',
+      data: {
+        gameComplete: true
+      }
     }
   } else {
-    newLevel = level
-  }
+    let possibleLevels = solutions[level]
+    let newPuzzle = possibleLevels[helper.randomNum(0, possibleLevels.length - 1)]
 
-  let newScore = score + points
-
-  return {
-    type: 'SET_LEVEL',
-    data: {
-      winner: false,
-      level: newLevel,
-      cellData: puzzle,
-      puzzleInfo: puzzleInfo,
-      autoSolved: false,
-      timerIsRunning: false,
-      timeLeft: 60,
-      score: newScore
+    return {
+      type: 'SET_LEVEL',
+      data: {
+        winner: false,
+        level: newLevel,
+        cellData: newPuzzle,
+        autoSolved: false,
+        timerIsRunning: false,
+        timeLeft: 60,
+        score: newScore
+      }
     }
   }
 }
@@ -77,41 +76,90 @@ export const OPEN_MODAL = () => {
   }
 }
 
-export const RANDOMIZE_COLORS = (gridWidth) => {
-  let characters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
-  let hexCode = '#'
-  for (let i = 0; i < 6; i++) {
-     let random = Math.round(Math.random() * (characters.length - 1))
-     hexCode += characters[random]
+export const RANDOMIZE_COLORS = (colorScheme) => {
+
+  let color = []
+  for (let i = 0; i < 3; i++) {
+     let random = Math.round(helper.randomNum(50, 230))
+     color.push(random)
   }
+
+  color = color.join(',')
+
   return {
     type: 'RANDOMIZE_COLORS',
     data: {
-      cellColor: hexCode
+      colorScheme: {
+        name: colorScheme.toJS().name,
+        background: colorScheme.toJS().background,
+        cell: color
+      }
     }
   }
 }
 
-// export const RESIZE_GRID = (gridWidth) => {
-//   let numOfCells = gridWidth * gridWidth
-//   let cellData = []
-//   let cellColor = ['transparent', '#a86ed4', '#d3b8bc', '#ffa56c', '#ffe273', '#b1c559', '#ed92a3', '#55bbc8', '#5585c6', '#8a6439', '#899089', '#ff683d', '#95287e', '#589542', '#ed60a3', '#55748e', '#d6e2c6']
-//   let animation = []
-//   for (let i = 0; i < numOfCells; i++) {
-//     cellData.push(i)
-//     animation.push('')
-//   }
-//   return {
-//     type: 'RESIZE_GRID',
-//     data: {
-//       cellData: cellData,
-//       cellColor: cellColor,
-//       gridWidth: gridWidth,
-//       winner: false,
-//       timeLeft: 0
-//     }
-//   }
-// }
+export const TOGGLE_BACKGROUND_COLOR = (colorScheme) => {
+
+  let newName = colorScheme.toJS().name
+  let newBackgroundColor = colorScheme.toJS().background
+  let newCellColor = colorScheme.toJS().cell
+
+  if (colorScheme.toJS().name == 'day') {
+    newName = 'night'
+    newBackgroundColor = '10,10,15'
+  } else if (colorScheme.toJS().name == 'night') {
+    newName = 'day'
+    newBackgroundColor = '241,241,242'
+  }
+
+  return {
+    type: 'TOGGLE_BACKGROUND_COLOR',
+    data: {
+      colorScheme: {
+        name: newName,
+        cell: newCellColor,
+        background: newBackgroundColor
+      }
+    }
+  }
+}
+
+export const RESET = () => {
+  return {
+    type: 'RESET',
+    data: {
+      animations: [],
+      backgroundColor: '#f1f1f2',
+      gameComplete: false,
+      gridWidth: 3,
+      cellData: '102345678',
+      colorScheme: {
+        name: 'day',
+        cell: '0, 130, 180',
+        background: '241, 241, 242'
+      },
+      level: 1,
+      menuIsOpen: false,
+      menuView: 'Main.js',
+      modalIsOpen: false,
+      autoSolved: false,
+      timeLeft: 60,
+      timerIsRunning: false,
+      score: 0,
+      winningCombo: '012345678',
+      winner: false
+    }
+  }
+}
+
+export const END_TUTORIAL = () => {
+  return {
+    type: 'CLOSE_MODAL',
+    data: {
+      tutorialIsOn: false
+    }
+  }
+}
 
 export const CLOSE_MODAL = () => {
   return {
@@ -119,6 +167,26 @@ export const CLOSE_MODAL = () => {
     data: {
       modalIsOpen: false,
       timeLeft: 60
+    }
+  }
+}
+
+export const OPEN_MENU = () => {
+  return {
+    type: 'OPEN_MENU',
+    data: {
+      menuIsOpen: true,
+      timerIsRunning: false
+    }
+  }
+}
+
+export const CLOSE_MENU = () => {
+  return {
+    type: 'CLOSE_MENU',
+    data: {
+      menuIsOpen: false,
+      timerIsRunning: true
     }
   }
 }

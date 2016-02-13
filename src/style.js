@@ -27,31 +27,3 @@ export const timer = {
   padding         : '10px 0',
   fontSize        : '40px'
 }
-
-export const toolbar = {
-  width           : '400px',
-  margin          : '20px auto',
-  padding         : '10px',
-  group: {
-    display         : 'inline-block',
-    margin          : '15px'
-  },
-  label: {
-    textTransform   : 'uppercase',
-    marginBottom   : '5px'
-  },
-  arrow: {
-    backgroundColor : '#eee',
-    padding         : '5px 10px',
-    cursor          : 'pointer'
-  },
-  value: {
-    padding         : '0 10px',
-    fontSize        : '22px',
-  },
-  button: {
-    backgroundColor : '#eee',
-    padding         : '5px 10px',
-    cursor          : 'pointer'
-  }
-}

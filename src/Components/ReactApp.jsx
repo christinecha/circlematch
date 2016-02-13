@@ -9,6 +9,10 @@ import Grid from './Grid.jsx'
 import Sidebar from './Sidebar.jsx'
 import Toolbar from './Toolbar.jsx'
 import _NextLevel from './_NextLevel.jsx'
+import _MenuButton from './_MenuButton.jsx'
+import _Menu from './_Menu.jsx'
+import _Tutorial from './_Tutorial.jsx'
+import _Timer from './_Timer.jsx'
 import * as style from '../style.js'
 import * as action from '../actions.js'
 import * as helper from '../helpers/helpers.js'
@@ -21,7 +25,7 @@ export class ReactApp extends React.Component {
 
   componentDidMount() {
     window.addEventListener('keydown', (e) => {
-      const { dispatch, gridWidth, cellData, winningCombo, winner, level, modalIsOpen, animation } = this.props
+      const { dispatch, gridWidth, cellData, winningCombo, winner, level, modalIsOpen, animations } = this.props
       if (modalIsOpen == true) {
         this.closeModal()
       } else {
@@ -39,25 +43,6 @@ export class ReactApp extends React.Component {
     }
   }
 
-  setNewLevel() {
-    const { dispatch, autoSolved, level, score, timeLeft } = this.props
-    // get all possilble levels with X difficulty
-    // randomly choose one of those
-    // get solution for that one
-    helper.getLevel(level).then((response) => {
-      console.log(response)
-      let puzzle = response.puzzle
-      let puzzleInfo = response.puzzleInfo.solution
-
-      // dispatch an action that:
-        // - updates the new puzzle combo
-        // - resets winner to false
-        // - updates the board to original
-      dispatch(action.SET_LEVEL(autoSolved, level, puzzle, puzzleInfo, score, timeLeft))
-    })
-  }
-
-
   runTimer() {
     timerLaunched = true
     let timer = setInterval(() => {
@@ -73,84 +58,132 @@ export class ReactApp extends React.Component {
   }
 
   closeModal() {
-    const { dispatch } = this.props
-    dispatch(action.CLOSE_MODAL())
-    this.setNewLevel()
-  }
-
-  solvePuzzle() {
-    const { dispatch, gridWidth, cellData, puzzleInfo, winningCombo, level } = this.props
-    dispatch(action.SOLVE_PUZZLE(gridWidth, cellData, winningCombo, puzzleInfo, level))
-  }
-
-  randomizeColors() {
-    const { dispatch, gridWidth } = this.props
-    dispatch(action.RANDOMIZE_COLORS(gridWidth))
-  }
-
-  resizeGrid(increment) {
     const { dispatch, autoSolved, gridWidth, level, score, timeLeft } = this.props
-    let newGridWidth = gridWidth + increment
-    if (newGridWidth > 4 || gridWidth < 2) {
-      return false
-    } else {
-      dispatch(action.RESIZE_GRID(newGridWidth))
-      dispatch(action.SET_LEVEL(level, newGridWidth, score, 0, autoSolved))
-    }
+    dispatch(action.SET_LEVEL(level + 1, gridWidth, score, timeLeft, autoSolved))
+    dispatch(action.CLOSE_MODAL())
+  }
+
+  endTutorial() {
+    const { dispatch } = this.props
+    dispatch(action.END_TUTORIAL())
+  }
+
+  openMenu() {
+    const { dispatch } = this.props
+    dispatch(action.OPEN_MENU())
+  }
+
+  closeMenu() {
+    const { dispatch } = this.props
+    dispatch(action.CLOSE_MENU())
+  }
+
+  randomizeColor() {
+    const { dispatch, colorScheme } = this.props
+    dispatch(action.RANDOMIZE_COLORS(colorScheme))
+  }
+
+  toggleBackgroundColor() {
+    const { dispatch, colorScheme } = this.props
+    dispatch(action.TOGGLE_BACKGROUND_COLOR(colorScheme))
+  }
+
+  autoSolve() {
+    const { dispatch, autoSolved, cellData, gridWidth, level, score, timeLeft } = this.props
+    this.closeMenu()
+    dispatch(action.SOLVE_PUZZLE(cellData, level))
+  }
+
+  reset() {
+    const { dispatch } = this.props
+    dispatch(action.RESET())
   }
 
   render() {
     const {
-      animation,
+      animations,
       autoSolved,
-      cellColor,
+      colorScheme,
       cellData,
+      gameComplete,
       gridWidth,
       level,
+      menuIsOpen,
+      menuView,
       modalIsOpen,
       score,
       timerIsRunning,
       timeLeft,
+      translations,
+      tutorialIsOn,
       winner,
       winningCombo
     } = this.props
 
-    let timerColor = {
-
+    let styles = {
+      container: {
+        backgroundColor: 'rgb(' + colorScheme.toJS().background + ')',
+        minHeight: '100vh'
+      },
+      modal: {
+        backgroundColor: 'none',
+        position: 'fixed'
+      }
     }
+
     return (
-      <div>
-        <h2>circlematch</h2>
-        <p>use your arrow keys to move</p>
-        <br />
-        <Modal isOpen={modalIsOpen} style={style.modal}>
+      <div style={styles.container}>
+        <Modal
+          isOpen={modalIsOpen} >
           <_NextLevel
             level={level}
             autoSolved={autoSolved}
-            closeModal={() => this.closeModal()}/>
+            colorScheme={colorScheme}
+            gameComplete={gameComplete}
+            score={score}
+            timeLeft={timeLeft}
+            reset={() => this.reset()}
+            closeModal={() => this.closeModal()} />
         </Modal>
+        <br />
+        <a href={"https://itunes.apple.com/us/app/circlematch-minimalistic-sliding/id1082737491?ls=1&mt=8"}>
+          <img
+            src={'src/assets/Download_on_the_App_Store_Badge_US-UK_135x40.svg'}
+            alt={'download on the app store'} />
+        </a>
+        <_Timer
+          colorScheme={colorScheme}
+          level={level}
+          score={score}
+          timeLeft={timeLeft} />
         <Grid
+          animations={animations}
           gridWidth={gridWidth}
           cellData={cellData}
-          cellColor={cellColor}
-          animation={animation} />
-        <Sidebar
-          gridWidth={gridWidth}
-          cellColor={cellColor}
+          colorScheme={colorScheme}
+          translations={translations} />
+        <_Menu
           level={level}
-          winningCombo={winningCombo}
+          menuView={menuView}
+          colorScheme={colorScheme}
           score={score}
-          onSolveButtonClick = {() => this.solvePuzzle()} />
-        <Toolbar
-          gridWidth={gridWidth}
-          resizeGridDown={() => this.resizeGrid(-1)}
-          resizeGridUp={() => this.resizeGrid(1)}
-          randomizeColors={() => this.randomizeColors()} />
-        <h2 style={style.timer}>
-          00:{timeLeft}
-        </h2>
+          autoSolve={() => this.autoSolve()}
+          reset={() => this.reset()}
+          randomizeColor={() => this.randomizeColor()}
+          toggleBackgroundColor={() => this.toggleBackgroundColor()} />
         <br />
-        <p>NOTE \\ Only works on desktop. Mobile coming soon!</p>
+        <_Tutorial />
+        <br /><br />
+        <div>
+          <h4>
+            CREATED BY <a href="http://christinecha.com">CHRISTINE CHA</a>
+            <p>--</p>
+            <a href="http://github.com/christinecha">GITHUB</a> •
+            <a href="http://twitter.com/christinechanyc">TWITTER</a> •
+            <a href="http://instagram.com/christinechanyc">INSTAGRAM</a>
+          </h4>
+         </div>
+         <br /><br />
       </div>
     )
   }
@@ -158,17 +191,22 @@ export class ReactApp extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    animation: state.get('animation'),
+    animations: state.get('animations'),
     autoSolved: state.get('autoSolved'),
-    cellColor: state.get('cellColor'),
+    backgroundColor: state.get('backgroundColor'),
+    colorScheme: state.get('colorScheme'),
     cellData: state.get('cellData'),
+    gameComplete: state.get('gameComplete'),
     gridWidth: state.get('gridWidth'),
     level: state.get('level'),
+    menuIsOpen: state.get('menuIsOpen'),
+    menuView: state.get('menuView'),
     modalIsOpen: state.get('modalIsOpen'),
-    puzzleInfo: state.get('puzzleInfo'),
     score: state.get('score'),
     timerIsRunning: state.get('timerIsRunning'),
     timeLeft: state.get('timeLeft'),
+    translations: state.get('translations'),
+    tutorialIsOn: state.get('tutorialIsOn'),
     winningCombo: state.get('winningCombo'),
     winner: state.get('winner')
   }
