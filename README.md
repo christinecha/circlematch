@@ -2,6 +2,8 @@
 A minimalistic twist on the classic 8-piece slider puzzle, built with React / Redux.
 
 <img src="/src/assets/screenshot1.png" width="300">
+<img src="/src/assets/screenshot2.png" width="300">
+<img src="/src/assets/screenshot4.png" width="300">
 
 Check it out live on the browser here: http://christinecha.github.io/circlematch/
 
