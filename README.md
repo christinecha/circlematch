@@ -1,4 +1,10 @@
 # slide-puzzle-react
-Slider puzzle built with React.js + Redux.
+A minimalistic twist on the classic 8-piece slider puzzle, built with React / Redux.
 
-Check it out live at: http://christinecha.github.io/circlematch/
+Check it out live on the browser here:
+### http://christinecha.github.io/circlematch/
+
+Download it on the App Store here:
+### https://itunes.apple.com/us/app/circlematch-minimalistic-sliding/id1082737491?ls=1&mt=8
+
+[ Designed and developed by Christine Cha ]
